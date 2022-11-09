@@ -42,3 +42,4 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG
           echo "::set-output
           name=image::$ECR_REGISTRY/$ECR_REPO:$IMAGE_TAG"
+          
