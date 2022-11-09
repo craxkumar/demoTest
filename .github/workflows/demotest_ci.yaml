@@ -35,7 +35,7 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
           IMAGE_TAG: demotestv1
-        run: >
+        run: |
           # Build a docker container and
           # push it to ECR so that it can
           # be deployed to ECS.
