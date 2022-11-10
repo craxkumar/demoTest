@@ -14,7 +14,10 @@ env:
   ECR_REPOSITORY: ${{ secrets.REPO_NAME }}
   IMAGE_TAG: demotest
   AWS_REGION: us-east-2
-
+  ECS_SERVICE: rorTestService
+  ECS_CLUSTER: rorTestCluster
+  CONTAINER_NAME: ruby_app
+  ECS_TASK_DEFINITION: ecs-task-def.json
 
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
@@ -55,3 +58,19 @@ jobs:
         run: |
           IMAGES_TO_DELETE=$( aws ecr list-images --region ${{ env.AWS_REGION }} --repository-name $ECR_REPOSITORY --filter "tagStatus=UNTAGGED" --query 'imageIds[*]' --output json )
           aws ecr batch-delete-image --region ${{ env.AWS_REGION }} --repository-name $ECR_REPOSITORY --image-ids "$IMAGES_TO_DELETE" || true
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: '${{ env.ECS_TASK_DEFINITION }}'
+          container-name: '${{ env.CONTAINER_NAME }}'
+          image: '${{ steps.build-image.outputs.image }}'
+
+      - name: Deploy Amazon ECS task definition
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: '${{ steps.task-def.outputs.task-definition }}'
+          service: '${{ env.ECS_SERVICE }}'
+          cluster: '${{ env.ECS_CLUSTER }}'
+          wait-for-service-stability: true
