@@ -26,9 +26,9 @@ jobs:
     runs-on: ubuntu-latest
 
     # permission to allow github action to generate id-token
-    permissions:
-      id-token: write
-      contents: read
+    # permissions:
+    #   id-token: write
+    #   contents: read
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
