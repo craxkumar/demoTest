@@ -15,7 +15,7 @@ env:
   IMAGE_TAG: demotest
   AWS_REGION: us-east-2
   ECS_SERVICE: rorTestService
-  ECS_CLUSTER: rk-KT-Cluster 
+  ECS_CLUSTER: rk-KT-demo
   CONTAINER_NAME: ruby_app
   ECS_TASK_DEFINITION: ecs-task-def.json
 
