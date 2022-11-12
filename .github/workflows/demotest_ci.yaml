@@ -26,9 +26,10 @@ jobs:
     runs-on: ubuntu-latest
 
     # permission to allow github action to generate id-token
-    # permissions:
-    #   id-token: write
-    #   contents: read
+    # commit permissions while using access-key/secret
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
@@ -38,10 +39,10 @@ jobs:
       - name: Configure AWS credentials 
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          # role-to-assume: arn:aws:iam::855770807483:role/github-actions-role
-          # role-session-name: GitHub-Action-Role
-          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
-          aws-secret-access-key: ${{ secrets.SECRET_KEY }}
+          role-to-assume: arn:aws:iam::855770807483:role/github-actions-role
+          role-session-name: GitHub-Action-Role
+          # aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          # aws-secret-access-key: ${{ secrets.SECRET_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Login to Amazon ECR
