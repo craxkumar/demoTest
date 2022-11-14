@@ -19,7 +19,7 @@ env:
   CONTAINER_NAME: ruby_app
   ECS_TASK_DEFINITION: ecs-task-def.json
 
-  
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -82,3 +82,5 @@ jobs:
           service: '${{ env.ECS_SERVICE }}'
           cluster: '${{ env.ECS_CLUSTER }}'
           wait-for-service-stability: true
+
+          
