@@ -9,7 +9,7 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/rk-task-def-demo",
+          "awslogs-group": "/ecs/rk-ror-task-def",
           "awslogs-region": "us-east-2",
           "awslogs-stream-prefix": "ecs"
         }
@@ -64,8 +64,8 @@
     "EC2",
     "FARGATE"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-2:855770807483:task-definition/rk-task-def-demo:1",
-  "family": "rk-task-def-demo",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-2:855770807483:task-definition/rk-ror-task-def:1",
+  "family": "rk-ror-task-def",
   "requiresAttributes": [
     {
       "targetId": null,
