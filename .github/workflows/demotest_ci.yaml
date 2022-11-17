@@ -36,6 +36,15 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v3
 
+      - name: Build and Run Tests
+        env:
+          RAILS_ENV: test
+        run: |
+          sudo apt-get update -qq && apt-get install -y nodejs
+          gem install bundler
+          bundle install --jobs 4 --retry 4
+          bundle exec rake
+
       # IAM roles is the recommended way to buld pipline via git-actions
       - name: Configure AWS credentials 
         uses: aws-actions/configure-aws-credentials@v1
@@ -67,20 +76,20 @@ jobs:
           IMAGES_TO_DELETE=$( aws ecr list-images --region ${{ env.AWS_REGION }} --repository-name $ECR_REPOSITORY --filter "tagStatus=UNTAGGED" --query 'imageIds[*]' --output json )
           aws ecr batch-delete-image --region ${{ env.AWS_REGION }} --repository-name $ECR_REPOSITORY --image-ids "$IMAGES_TO_DELETE" || true
 
-      - name: Fill in the new image ID in the Amazon ECS task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: '${{ env.ECS_TASK_DEFINITION }}'
-          container-name: '${{ env.CONTAINER_NAME }}'
-          image: '${{ steps.build-image.outputs.image }}'
+      # - name: Fill in the new image ID in the Amazon ECS task definition
+      #   id: task-def
+      #   uses: aws-actions/amazon-ecs-render-task-definition@v1
+      #   with:
+      #     task-definition: '${{ env.ECS_TASK_DEFINITION }}'
+      #     container-name: '${{ env.CONTAINER_NAME }}'
+      #     image: '${{ steps.build-image.outputs.image }}'
 
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
-        with:
-          task-definition: '${{ steps.task-def.outputs.task-definition }}'
-          service: '${{ env.ECS_SERVICE }}'
-          cluster: '${{ env.ECS_CLUSTER }}'
-          wait-for-service-stability: true
+      # - name: Deploy Amazon ECS task definition
+      #   uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      #   with:
+      #     task-definition: '${{ steps.task-def.outputs.task-definition }}'
+      #     service: '${{ env.ECS_SERVICE }}'
+      #     cluster: '${{ env.ECS_CLUSTER }}'
+      #     wait-for-service-stability: true
 
           
