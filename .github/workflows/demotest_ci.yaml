@@ -41,8 +41,8 @@ jobs:
           RAILS_ENV: test
         run: |
           sudo apt-get update -qq && sudo apt-get install -y nodejs
-          gem install bundler
-          bundle install --jobs 4 --retry 4
+          sudo gem install bundler
+          sudo bundle install --jobs 4 --retry 4
           bundle exec rake
 
       # IAM roles is the recommended way to buld pipline via git-actions
